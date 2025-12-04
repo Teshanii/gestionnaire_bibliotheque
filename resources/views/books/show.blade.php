@@ -56,7 +56,7 @@
 
         <div class="mt-6 pt-6 border-t">
             <form action="/books/{{ $book->id }}" method="POST"
-                onsubmit="return confirm('⚠️ Êtes-vous sûr de vouloir supprimer ce livre ?')">
+                onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce livre ?')">
                 @csrf
                 @method('DELETE')
 

@@ -11,20 +11,20 @@
         
         <!-- En-tête avec gradient -->
         <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg shadow-lg p-8 mb-8">
-            <h1 class="text-white mb-2">📚 Ma Bibliothèque</h1>
+            <h1 class="text-white mb-2">Ma Bibliothèque</h1>
             <p class="text-blue-100">Gérez votre collection de livres</p>
         </div>
 
         @if(session('success'))
             <div class="bg-green-100 border-l-4 border-green-500 text-green-700 px-4 py-3 rounded mb-6 shadow">
-                <p class="font-medium">✅ {{ session('success') }}</p>
+                <p class="font-medium">{{ session('success') }}</p>
             </div>
         @endif
 
         <div class="flex justify-between items-center mb-6">
             <h2>Mes livres ({{ count($books) }})</h2>
             <a href="/books/create" class="btn btn-primary">
-                ➕ Ajouter un livre
+                + Ajouter un livre
             </a>
         </div>
 
@@ -39,7 +39,7 @@
                                     {{ $book->title }}
                                 </a>
                                 <p class="text-gray-600 mt-2">
-                                    <span class="font-medium">👤 {{ $book->author }}</span> 
+                                    <span class="font-medium"> {{ $book->author }}</span> 
                                     <span class="text-gray-400">•</span>
                                     <span>📅 {{ $book->year }}</span>
                                 </p>
@@ -58,7 +58,7 @@
             </div>
         @else
             <div class="bg-white rounded-lg shadow p-12 text-center">
-                <p class="text-gray-500 text-lg mb-4">📭 Aucun livre dans la bibliothèque.</p>
+                <p class="text-gray-500 text-lg mb-4">Aucun livre dans la bibliothèque.</p>
                 <a href="/books/create" class="btn btn-primary">
                     Ajouter le premier livre
                 </a>
