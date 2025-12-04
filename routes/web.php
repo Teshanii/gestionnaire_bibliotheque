@@ -1,20 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Models\Book;
+use App\Http\Controllers\BookController;
 
-// Page d'accueil - Liste des livres
-Route::get('/', function () {
-    $books = Book::all();
-    return view('books.index', compact('books'));
-})->name('books.index');
+// Route d'accueil
+Route::get('/', [BookController::class, 'index'])->name('home');
 
+// Routes CRUD 
+Route::resource('books', BookController::class);
 
-// Afficher un livre
-Route::get('/books/{id}', function ($id) {
-    $book = Book::findOrFail($id);
-    return view('books.show', compact('book'));
-})->name('books.show');
-
-
-
+?>
