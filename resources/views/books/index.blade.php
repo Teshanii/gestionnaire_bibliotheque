@@ -1,70 +1,51 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bibliothèque</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body>
-    <div class="max-w-4xl mx-auto px-4 py-8">
+<x-layout>
+    <div class="max-w-7xl mx-auto px-4 py-8">
         
-        <!-- En-tête avec gradient -->
-        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg shadow-lg p-8 mb-8">
-            <h1 class="text-white mb-2">Ma Bibliothèque</h1>
-            <p class="text-blue-100">Gérez votre collection de livres</p>
+        {{-- En-tête --}}
+        <div class="flex justify-between items-center mb-8">
+            <h1>📚 Tous les livres</h1>
+            
+            @auth
+                @if(auth()->user()->role === 'admin')
+                    <a href="{{ route('books.create') }}" class="btn btn-primary">
+                        ➕ Ajouter un livre
+                    </a>
+                @endif
+            @endauth
         </div>
 
-        @if(session('success'))
-            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 px-4 py-3 rounded mb-6 shadow">
-                <p class="font-medium">{{ session('success') }}</p>
-            </div>
-        @endif
-
-        <div class="flex justify-between items-center mb-6">
-            <h2>Mes livres ({{ count($books) }})</h2>
-            <a href="/books/create" class="btn btn-primary">
-                + Ajouter un livre
-            </a>
+        {{-- Barre de recherche --}}
+        <div class="mb-8">
+            <form action="{{ route('books.index') }}" method="GET" class="flex gap-4">
+                <input 
+                    type="text" 
+                    name="search" 
+                    value="{{ request('search') }}"
+                    placeholder="Rechercher par titre ou auteur..." 
+                    class="form-input flex-1"
+                >
+                <button type="submit" class="btn btn-primary">
+                    🔍 Rechercher
+                </button>
+            </form>
         </div>
 
-        @if(count($books) > 0)
-            <div class="space-y-4">
+        {{-- Liste des livres --}}
+        @if($books->count() > 0)
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 @foreach($books as $book)
-                    <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition border-l-4 border-blue-500">
-                        <div class="flex justify-between items-start">
-                            <div class="flex-1">
-                                <a href="/books/{{ $book->id }}" 
-                                   class="text-xl font-bold text-blue-600 hover:text-blue-800 hover:underline">
-                                    {{ $book->title }}
-                                </a>
-                                <p class="text-gray-600 mt-2">
-                                    <span class="font-medium"> {{ $book->author }}</span> 
-                                    <span class="text-gray-400">•</span>
-                                    <span>📅 {{ $book->year }}</span>
-                                </p>
-                                @if($book->description)
-                                    <p class="text-gray-500 text-sm mt-3">
-                                        {{ Str::limit($book->description, 120) }}
-                                    </p>
-                                @endif
-                            </div>
-                            <a href="/books/{{ $book->id }}" class="btn btn-primary ml-4">
-                                Voir →
-                            </a>
-                        </div>
-                    </div>
+                    <x-book-card :book="$book" />
                 @endforeach
             </div>
+
+            {{-- Pagination --}}
+            <div class="mt-8">
+                {{ $books->links() }}
+            </div>
         @else
-            <div class="bg-white rounded-lg shadow p-12 text-center">
-                <p class="text-gray-500 text-lg mb-4">Aucun livre dans la bibliothèque.</p>
-                <a href="/books/create" class="btn btn-primary">
-                    Ajouter le premier livre
-                </a>
+            <div class="text-center py-12">
+                <p class="text-xl text-gray-600">Aucun livre trouvé</p>
             </div>
         @endif
     </div>
-</body>
-</html>
-
+</x-layout>

@@ -1,98 +1,133 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajouter un livre</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body>
-    <div class="max-w-2xl mx-auto px-4 py-8 w-full">
-        
-        <a href="/" class="italic text-slate-500 hover:text-slate-700">
-            ← Retour à la bibliothèque
-        </a>
+<x-layout>
+    <div class="max-w-2xl mx-auto px-4 py-8">
+        <h1 class="mb-6">➕ Ajouter un nouveau livre</h1>
 
-        <h1 class="mt-4 mb-6">Ajouter un nouveau livre </h1>
-
-        <form action="/books" method="POST" class="space-y-6">
-            @csrf
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
-                    Titre du livre
-                </label>
-                <input 
-                    type="text" 
-                    name="title" 
-                    placeholder="Ex : Le Petit Prince"
-                    required 
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
+        {{-- Messages d'erreur --}}
+        @if($errors->any())
+            <div class="alert alert-error mb-6">
+                <ul class="list-disc list-inside">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
+        @endif
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
-                    Auteur
-                </label>
-                <input 
-                    type="text" 
-                    name="author" 
-                    placeholder="Ex : Antoine de Saint-Exupéry"
-                    required 
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-            </div>
+        <div class="card">
+            <form action="{{ route('books.store') }}" method="POST" class="space-y-6">
+                @csrf
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
-                    Description
-                </label>
-                <textarea 
-                    name="description" 
-                    rows="4"
-                    placeholder="Décrivez brièvement le livre..."
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                ></textarea>
-            </div>
-
-            <div class="grid grid-cols-2 gap-4">
+                {{-- Titre --}}
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                        Année de publication
-                    </label>
-                    <input 
-                        type="number" 
-                        name="year" 
-                        placeholder="Ex : 1943"
-                        required 
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                        ISBN
+                    <label for="title" class="form-label">
+                        📖 Titre du livre *
                     </label>
                     <input 
                         type="text" 
-                        name="isbn" 
-                        placeholder="Ex : 978-2070408504"
-                        required 
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
+                        id="title" 
+                        name="title" 
+                        value="{{ old('title') }}"
+                        class="form-input"
+                        placeholder="Ex: Le Petit Prince"
+                        required
+                    >
                 </div>
-            </div>
 
-            <div class="flex gap-3 pt-4">
-                <button type="submit" class="btn btn-primary flex-1">
-                    Créer le livre
-                </button>
-                <a href="/" class="btn btn-secondary">
-                    Annuler
-                </a>
-            </div>
-        </form>
+                {{-- Auteur --}}
+                <div>
+                    <label for="author" class="form-label">
+                        ✍️ Auteur *
+                    </label>
+                    <input 
+                        type="text" 
+                        id="author" 
+                        name="author" 
+                        value="{{ old('author') }}"
+                        class="form-input"
+                        placeholder="Ex: Antoine de Saint-Exupéry"
+                        required
+                    >
+                </div>
+
+                {{-- Catégorie --}}
+                <div>
+                    <label for="category_id" class="form-label">
+                        🏷️ Catégorie *
+                    </label>
+                    <select 
+                        id="category_id" 
+                        name="category_id"
+                        class="form-input"
+                        required
+                    >
+                        <option value="">-- Choisir une catégorie --</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                {{-- Résumé --}}
+                <div>
+                    <label for="summary" class="form-label">
+                        📝 Résumé
+                    </label>
+                    <textarea 
+                        id="summary" 
+                        name="summary" 
+                        rows="4"
+                        class="form-input"
+                        placeholder="Résumé du livre (optionnel)"
+                    >{{ old('summary') }}</textarea>
+                </div>
+
+                {{-- Année de publication --}}
+                <div>
+                    <label for="published_year" class="form-label">
+                        📅 Année de publication *
+                    </label>
+                    <input 
+                        type="number" 
+                        id="published_year" 
+                        name="published_year" 
+                        value="{{ old('published_year') }}"
+                        class="form-input"
+                        placeholder="Ex: 2024"
+                        min="1000"
+                        max="2100"
+                        required
+                    >
+                </div>
+
+                {{-- ISBN --}}
+                <div>
+                    <label for="isbn" class="form-label">
+                        🔢 ISBN *
+                    </label>
+                    <input 
+                        type="text" 
+                        id="isbn" 
+                        name="isbn" 
+                        value="{{ old('isbn') }}"
+                        class="form-input"
+                        placeholder="Ex: 978-2070612758"
+                        required
+                    >
+                </div>
+
+                {{-- Boutons --}}
+                <div class="flex gap-4">
+                    <button type="submit" class="btn btn-primary">
+                        ✅ Ajouter le livre
+                    </button>
+
+                    <a href="{{ route('books.index') }}" class="btn btn-secondary">
+                        ❌ Annuler
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
-</body>
-</html>
+</x-layout>

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Book;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Category;
 use Illuminate\Database\Seeder;
 
 class BookSeeder extends Seeder
@@ -13,12 +14,17 @@ class BookSeeder extends Seeder
      */
     public function run(): void
     {
+        $sciFi = Category::where('name', 'Science-Fiction')->first();
+        $fantasy = Category::where('name', 'Fantasy')->first();
+        $thriller = Category::where('name', 'Thriller')->first();
+        
         Book::create([
             'title' => 'Le Voleur de foudre',
             'author' => 'Rick Riordan',
-            'year' => 2005,
+            'published_year' => 2005,
             'isbn' => '978-2226186836',
-            'description' => 'Percy Jackson découvre qu\'il est un demi-dieu, fils de Poséidon, et doit empêcher une guerre entre les dieux de l\'Olympe.'
+            'summary' => 'Percy Jackson découvre qu\'il est un demi-dieu, fils de Poséidon, et doit empêcher une guerre entre les dieux de l\'Olympe.',
+            'category_id' => $fantasy->id,
         ]);
     }
 }
