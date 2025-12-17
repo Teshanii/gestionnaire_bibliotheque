@@ -9,24 +9,24 @@ use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
-    // ========== AFFICHER LE FORMULAIRE DE CONNEXION ==========
+    // Afficher le formulaire de connexion
     public function showLogin()
     {
         return view('auth.login');
     }
 
-    // ========== TRAITER LA CONNEXION ==========
+    // Traiter la connexion
     public function login(Request $request)
     {
-        $credentials = $request->validate([
+        $data = $request->validate([
             'email' => 'required|email',
-            'password' => 'required|min:6',
+            'password' => 'required',
         ]);
 
-        if (Auth::attempt($credentials, $request->filled('remember'))) {
-            $request->session()->regenerate();
-
+        // Tenter la connexion
+        if (Auth::attempt($data)) {
             
+            // Rediriger selon le rôle
             if (Auth::user()->role === 'admin') {
                 return redirect()->route('admin.dashboard')
                     ->with('success', 'Bienvenue Admin ' . Auth::user()->name . ' !');
@@ -36,18 +36,19 @@ class LoginController extends Controller
                 ->with('success', 'Bienvenue ' . Auth::user()->name . ' !');
         }
 
+        // Si échec de connexion
         return back()->withErrors([
             'email' => 'Email ou mot de passe incorrect.',
-        ])->onlyInput('email');
+        ]);
     }
 
-    // ========== AFFICHER LE FORMULAIRE D'INSCRIPTION ==========
+    // Afficher le formulaire d'inscription
     public function showRegister()
     {
         return view('auth.register');
     }
 
-    // ========== TRAITER L'INSCRIPTION ==========
+    // Traiter l'inscription
     public function register(Request $request)
     {
         $validated = $request->validate([
@@ -60,23 +61,22 @@ class LoginController extends Controller
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'role' => 'user', //par défaut, le rôle est 'user'
+            'role' => 'user',
         ]);
 
+        // Connecter automatiquement l'utilisateur
         Auth::login($user);
 
         return redirect()->route('dashboard')
-            ->with('success', ' Compte créé avec succès ! Bienvenue ' . $user->name . ' !');
+            ->with('success', 'Compte créé avec succès ! Bienvenue ' . $user->name . ' !');
     }
 
-    // ========== DÉCONNEXION ==========
-    public function logout(Request $request)
+    // Déconnexion
+    public function logout()
     {
         Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
 
         return redirect()->route('home')
-            ->with('success', ' Vous êtes déconnecté.');
+            ->with('success', 'Vous êtes déconnecté.');
     }
 }

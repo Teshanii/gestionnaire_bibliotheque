@@ -1,11 +1,11 @@
 <x-layout>
     <div class="max-w-2xl mx-auto px-4 py-8">
-        <h1 class="mb-6">✏️ Modifier le livre</h1>
+        <h1 class="mb-8"> Modifier "{{ $book->title }}"</h1>
 
         {{-- Messages d'erreur --}}
         @if($errors->any())
-            <div class="alert alert-error mb-6">
-                <ul class="list-disc list-inside">
+            <div class="bg-red-50 border-l-4 border-red-500 text-red-800 p-4 rounded-lg mb-6">
+                <ul class="list-inside mt-2">
                     @foreach($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
@@ -13,53 +13,92 @@
             </div>
         @endif
 
-        <div class="card">
+        <div class="bg-white rounded-xl shadow-lg p-8">
             <form action="{{ route('books.update', $book) }}" method="POST" class="space-y-6">
                 @csrf
                 @method('PUT')
 
                 {{-- Titre --}}
                 <div>
-                    <label for="title" class="form-label">
-                        📖 Titre du livre *
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Titre du livre *
                     </label>
                     <input 
                         type="text" 
-                        id="title" 
                         name="title" 
-                        value="{{ old('title', $book->title) }}"
-                        class="form-input"
-                        required
+                        value="{{ old('title', $book->title) }}" 
+                        required 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
+                    @error('title')
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 {{-- Auteur --}}
                 <div>
-                    <label for="author" class="form-label">
-                        ✍️ Auteur *
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Auteur *
                     </label>
                     <input 
                         type="text" 
-                        id="author" 
                         name="author" 
-                        value="{{ old('author', $book->author) }}"
-                        class="form-input"
-                        required
+                        value="{{ old('author', $book->author) }}" 
+                        required 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
+                    @error('author')
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                {{-- ISBN --}}
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        ISBN *
+                    </label>
+                    <input 
+                        type="text" 
+                        name="isbn" 
+                        value="{{ old('isbn', $book->isbn) }}" 
+                        required 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                    @error('isbn')
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                {{-- Année --}}
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Année de publication *
+                    </label>
+                    <input 
+                        type="number" 
+                        name="published_year" 
+                        value="{{ old('published_year', $book->published_year) }}" 
+                        required 
+                        min="1000" 
+                        max="{{ date('Y') }}"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                    @error('published_year')
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 {{-- Catégorie --}}
                 <div>
-                    <label for="category_id" class="form-label">
-                        🏷️ Catégorie *
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Catégorie *
                     </label>
                     <select 
-                        id="category_id" 
-                        name="category_id"
-                        class="form-input"
+                        name="category_id" 
                         required
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
-                        <option value="">-- Choisir une catégorie --</option>
+                        <option value="">Sélectionnez une catégorie</option>
                         @foreach($categories as $category)
                             <option value="{{ $category->id }}" 
                                 {{ old('category_id', $book->category_id) == $category->id ? 'selected' : '' }}>
@@ -67,72 +106,45 @@
                             </option>
                         @endforeach
                     </select>
+                    @error('category_id')
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 {{-- Résumé --}}
                 <div>
-                    <label for="summary" class="form-label">
-                        📝 Résumé
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Résumé (optionnel)
                     </label>
                     <textarea 
-                        id="summary" 
                         name="summary" 
-                        rows="4"
-                        class="form-input"
+                        rows="4" 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >{{ old('summary', $book->summary) }}</textarea>
-                </div>
-
-                {{-- Année de publication --}}
-                <div>
-                    <label for="published_year" class="form-label">
-                        📅 Année de publication *
-                    </label>
-                    <input 
-                        type="number" 
-                        id="published_year" 
-                        name="published_year" 
-                        value="{{ old('published_year', $book->published_year) }}"
-                        class="form-input"
-                        required
-                    >
-                </div>
-
-                {{-- ISBN --}}
-                <div>
-                    <label for="isbn" class="form-label">
-                        🔢 ISBN *
-                    </label>
-                    <input 
-                        type="text" 
-                        id="isbn" 
-                        name="isbn" 
-                        value="{{ old('isbn', $book->isbn) }}"
-                        class="form-input"
-                        required
-                    >
+                    @error('summary')
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 {{-- Boutons --}}
                 <div class="flex gap-4">
-                    <button type="submit" class="btn btn-primary">
-                        ✅ Enregistrer
+                    <button type="submit" class="btn btn-primary flex-1">
+                         Enregistrer les modifications
                     </button>
-
                     <a href="{{ route('books.show', $book) }}" class="btn btn-secondary">
-                        ❌ Annuler
+                        Annuler
                     </a>
                 </div>
             </form>
 
-            {{-- Formulaire de suppression --}}
-            <div class="mt-6 pt-6 border-t">
-                <form action="{{ route('books.destroy', $book) }}" method="POST"
-                    onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce livre ?')">
+            
+            <div class="mt-8 pt-8 border-t-2 border-red-200">
+                <form action="{{ route('books.destroy', $book) }}" method="POST" 
+                      onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce livre ?')">
                     @csrf
                     @method('DELETE')
-
                     <button type="submit" class="btn btn-danger">
-                        🗑️ Supprimer ce livre
+                        Supprimer ce livre
                     </button>
                 </form>
             </div>

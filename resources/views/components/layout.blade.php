@@ -1,91 +1,88 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ma Bibliothèque</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ $title ?? 'Bibliothèque' }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gray-50 min-h-screen flex flex-col">
-
-    {{-- ========== NAVIGATION ========== --}}
-    <nav class="bg-white shadow-sm mb-8">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center h-16">
-                {{-- Logo --}}
+<body class="min-h-screen flex flex-col">
+    
+    {{-- Header --}}
+    <header class="bg-white shadow-md">
+        <nav class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
                 <a href="{{ route('home') }}" class="text-2xl font-bold text-blue-600">
-                    📚 Ma Bibliothèque
+                    📚 Bibliothèque
                 </a>
-
-                {{-- Menu --}}
+                
                 <div class="flex items-center gap-6">
-                    <a href="{{ route('books.index') }}" class="text-gray-700 hover:text-blue-600 transition">
-                        📖 Livres
+                    <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}">
+                        Accueil
                     </a>
-
+                    <a href="{{ route('books.index') }}" class="nav-link {{ request()->routeIs('books.*') ? 'active' : '' }}">
+                        Livres
+                    </a>
+                    
                     @auth
-                        {{-- ✅ ADMIN : Dashboard Admin --}}
                         @if(auth()->user()->role === 'admin')
-                            <a href="{{ route('admin.dashboard') }}" 
-                               class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-semibold">
-                                🔐 Dashboard Admin
+                            <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.*') ? 'active' : '' }}">
+                                Admin
                             </a>
                         @else
-                            {{-- ✅ USER : Mon Profil --}}
-                            <a href="{{ route('dashboard') }}" class="text-gray-700 hover:text-blue-600 transition">
-                                👤 Mon Profil
+                            <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                                Tableau de bord
                             </a>
                         @endif
-
-                        {{-- Bouton déconnexion --}}
-                        <form method="POST" action="{{ route('logout') }}" class="inline">
+                        
+                        <form action="{{ route('logout') }}" method="POST" class="inline">
                             @csrf
-                            <button type="submit" class="text-red-600 hover:text-red-700 transition">
-                                🚪 Déconnexion
+                            <button type="submit" class="">
+                                Déconnexion
                             </button>
                         </form>
                     @else
-                        {{-- ✅ INVITÉ : Login/Register --}}
-                        <a href="{{ route('login') }}" class="text-gray-700 hover:text-blue-600 transition">
-                            🔐 Connexion
+                        <a href="{{ route('login') }}" class="nav-link">
+                            Connexion
                         </a>
-                        <a href="{{ route('register') }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                            ✨ Inscription
+                        <a href="{{ route('register') }}" class="btn btn-primary">
+                            Inscription
                         </a>
                     @endauth
                 </div>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
-    {{-- ========== MESSAGES FLASH ========== --}}
+    {{-- Messages flash --}}
     @if(session('success'))
-        <div class="max-w-7xl mx-auto px-4 mb-4">
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg">
-                ✅ {{ session('success') }}
+        <div class="max-w-7xl mx-auto px-4 mt-4">
+            <div class="bg-green-50 border-l-4 border-green-500 text-green-800 p-4 rounded-lg shadow flex items-center gap-3">
+                <p class="font-medium">{{ session('success') }}</p>
             </div>
         </div>
     @endif
 
     @if(session('error'))
-        <div class="max-w-7xl mx-auto px-4 mb-4">
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
-                ❌ {{ session('error') }}
+        <div class="max-w-7xl mx-auto px-4 mt-4">
+            <div class="bg-red-50 border-l-4 border-red-500 text-red-800 p-4 rounded-lg shadow flex items-center gap-3">
+                <p class="font-medium">{{ session('error') }}</p>
             </div>
         </div>
     @endif
 
-    {{-- ========== CONTENU ========== --}}
-    <main class="flex-grow">
+    {{-- Contenu --}}
+    <main class="flex-1">
         {{ $slot }}
     </main>
 
-    {{-- ========== FOOTER ========== --}}
-    <footer class="bg-gray-800 text-white mt-auto py-6">
+    {{-- Footer --}}
+    <footer class="bg-gray-800 text-white py-8 mt-16">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p>&copy; {{ date('Y') }} Ma Bibliothèque - Tous droits réservés</p>
+            <p>&copy; {{ date('Y') }} Bibliothèque - Projet Laravel</p>
         </div>
     </footer>
 
+    @fluxScripts
 </body>
 </html>

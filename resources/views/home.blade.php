@@ -1,18 +1,18 @@
 <x-layout>
     <div class="max-w-7xl mx-auto px-4 py-8">
-        
-        {{-- Hero --}}
+
+        {{-- Bannière de bienvenue --}}
         <div class="text-center py-16">
             <h1 class="text-5xl font-bold mb-4">
-                📚 Bienvenue dans Ma Bibliothèque
+                📚 Bienvenue dans La Bibliothèque
             </h1>
             <p class="text-xl text-gray-600 mb-8">
                 Découvrez et gérez votre collection de livres
             </p>
-            
+
             @guest
                 <a href="{{ route('register') }}" class="btn btn-primary text-lg px-8 py-3">
-                    ✨ Créer un compte gratuit
+                    Créer un compte gratuit
                 </a>
             @endguest
         </div>
@@ -25,7 +25,7 @@
                 icon="📚" 
                 color="blue" 
             />
-            
+
             <x-stat-card 
                 label="Membres inscrits" 
                 :value="$totalUsers" 
@@ -49,7 +49,7 @@
             </div>
         @endif
 
-        {{-- CTA --}}
+        
         <div class="text-center py-12 bg-blue-50 rounded-2xl mt-16">
             <h2 class="mb-4">Prêt à découvrir plus de livres ?</h2>
             <p class="text-gray-600 mb-6">
@@ -62,9 +62,10 @@
                 </a>
             @else
                 <a href="{{ route('register') }}" class="btn btn-primary inline-block">
-                    ✨ Créer un compte
+                     Créer un compte
                 </a>
             @endauth
         </div>
     </div>
 </x-layout>
+ 

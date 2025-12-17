@@ -8,32 +8,32 @@ use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
+    // Afficher la liste des livres avec recherche et filtre
     public function index(Request $request)
     {
+        // Récupérer les catégories pour le filtre
+        $categories = Category::all();
         
-        $query = Book::with('category');
+        // Commencer la requête
+        $books = Book::query();
 
-        // Si y'a une recherche par titre/auteur
-        if ($request->filled('search')) {
+        // Si y'a une recherche par titre ou auteur
+        if ($request->search) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                ->orWhere('author', 'like', "%{$search}%");
-            });
+            $books->where('title', 'like', "%$search%")
+                  ->orWhere('author', 'like', "%$search%");
         }
 
         // Si y'a un filtre par catégorie
-        if ($request->filled('category')) {
-            $query->where('category_id', $request->category);
+        if ($request->category) {
+            $books->where('category_id', $request->category);
         }
 
-        // On récupère les résultats
-        //$books = $query->latest()->get();
-        $books = $query->latest()->paginate(12)->appends($request->query());
+        // Récupérer les résultats avec pagination
+        $books = $books->latest()->paginate(12);
 
-        return view('books.index', compact('books'));
+        return view('books.index', compact('books', 'categories'));
     }
-
 
     // Formulaire de création
     public function create()
@@ -51,7 +51,7 @@ class BookController extends Controller
             'summary' => 'nullable',
             'published_year' => 'required|integer',
             'isbn' => 'required|unique:books',
-            'category_id' => 'required'
+            'category_id' => 'required|exists:categories,id'
         ]);
 
         Book::create($validated);
@@ -63,7 +63,7 @@ class BookController extends Controller
     // Afficher un livre
     public function show(string $id)
     {
-        $book = Book::with('category')->findOrFail($id);
+        $book = Book::findOrFail($id);
         return view('books.show', compact('book'));
     }
 
@@ -86,7 +86,7 @@ class BookController extends Controller
             'summary' => 'nullable',
             'published_year' => 'required|integer',
             'isbn' => 'required|unique:books,isbn,' . $book->id,
-            'category_id' => 'required'
+            'category_id' => 'required|exists:categories,id'
         ]);
 
         $book->update($validated);
@@ -105,4 +105,3 @@ class BookController extends Controller
             ->with('success', 'Livre supprimé avec succès !');
     }
 }
-

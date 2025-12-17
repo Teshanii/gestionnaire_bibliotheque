@@ -1,12 +1,17 @@
-{{-- Composant pour afficher une statistique --}}
-@props(['label', 'value', 'icon', 'color'])
+@props(['label', 'value', 'icon', 'color' => 'blue'])
 
-<div class="card border-l-4 border-{{ $color }}-500">
+<div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
     <div class="flex items-center justify-between">
         <div>
-            <p class="text-gray-600 mb-1">{{ $label }}</p>
-            <p class="text-3xl font-bold">{{ $value }}</p>
+            <p class="text-gray-600 text-sm font-medium uppercase tracking-wide mb-2">
+                {{ $label }}
+            </p>
+            <p class="text-4xl font-bold text-{{ $color }}-600">
+                {{ $value }}
+            </p>
         </div>
-        <span class="text-5xl">{{ $icon }}</span>
+        <div class="text-5xl">
+            {{ $icon }}
+        </div>
     </div>
 </div>

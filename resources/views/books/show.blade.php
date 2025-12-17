@@ -1,70 +1,79 @@
 <x-layout>
     <div class="max-w-4xl mx-auto px-4 py-8">
-        <a href="{{ route('books.index') }}" class="text-blue-600 hover:text-blue-700 font-semibold mb-6 inline-block">
-            ← Retour à la liste
+        
+        <a href="{{ route('books.index') }}" class="text-blue-600 hover:text-blue-700 font-medium mb-6 inline-block">
+            ← Retour au catalogue
         </a>
 
-        <div class="card">
-            {{-- Image de couverture --}}
-            <div class="bg-gradient-to-r from-blue-500 to-purple-500 text-center py-16 rounded-t-xl">
-                <span class="text-8xl">📖</span>
+        @php
+            $categorySlug = $book->category ? Str::slug($book->category->name) : 'default';
+            $badgeClass = "badge-{$categorySlug}";
+            $coverClass = "category-{$categorySlug}";
+        @endphp
+
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            {{-- Couverture --}}
+            <div class="{{ $coverClass }} h-64 flex items-center justify-center text-white">
+                <span class="text-9xl font-bold opacity-90">
+                    {{ substr($book->title, 0, 1) }}
+                </span>
             </div>
 
-            {{-- Contenu --}}
-            <div class="p-6">
+            <div class="p-8">
+                {{-- Titre + Bouton modifier --}}
                 <div class="flex justify-between items-start mb-6">
                     <div>
                         <h1 class="mb-3">{{ $book->title }}</h1>
-                        <p class="text-xl text-gray-600">✍️ {{ $book->author }}</p>
+                        <p class="text-xl text-gray-600">par {{ $book->author }}</p>
 
                         {{-- Badge catégorie --}}
                         @if($book->category)
-                            <div class="mt-3">
-                                <span class="inline-block bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold">
-                                    🏷️ {{ $book->category->name }}
-                                </span>
-                            </div>
+                            <span class="badge {{ $badgeClass }} mt-3">
+                                {{ $book->category->name }}
+                            </span>
                         @endif
                     </div>
 
                     @auth
                         @if(auth()->user()->role === 'admin')
-                            <a href="{{ route('books.edit', $book) }}" class="btn bg-yellow-500 hover:bg-yellow-600 text-white">
-                                ✏️ Modifier
+                            <a href="{{ route('books.edit', $book) }}" class="btn btn-primary">
+                                Modifier
                             </a>
                         @endif
                     @endauth
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                {{-- Infos --}}
+                <div class="grid grid-cols-2 gap-4 mb-6">
                     <div class="bg-gray-50 p-4 rounded-lg">
-                        <p class="text-sm text-gray-600 font-semibold mb-2">📅 Année de publication</p>
-                        <p class="text-lg text-gray-900">{{ $book->published_year }}</p>
+                        <p class="text-sm text-gray-600 mb-1">Année de publication</p>
+                        <p class="text-lg font-bold">{{ $book->published_year }}</p>
                     </div>
 
                     <div class="bg-gray-50 p-4 rounded-lg">
-                        <p class="text-sm text-gray-600 font-semibold mb-2">🔢 ISBN</p>
-                        <p class="text-lg text-gray-900">{{ $book->isbn }}</p>
+                        <p class="text-sm text-gray-600 mb-1">ISBN</p>
+                        <p class="text-lg font-mono">{{ $book->isbn }}</p>
                     </div>
                 </div>
 
+                {{-- Résumé --}}
                 @if($book->summary)
                     <div class="bg-blue-50 p-6 rounded-lg">
-                        <p class="text-sm text-gray-700 font-semibold mb-3">📝 Résumé</p>
-                        <p class="text-gray-800 leading-relaxed">{{ $book->summary }}</p>
+                        <h3 class="mb-3"> Résumé</h3>
+                        <p class="text-gray-700 leading-relaxed">{{ $book->summary }}</p>
                     </div>
                 @endif
 
+                {{-- Zone danger --}}
                 @auth
                     @if(auth()->user()->role === 'admin')
-                        <div class="mt-8 pt-6 border-t">
-                            <form action="{{ route('books.destroy', $book) }}" method="POST"
-                                onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce livre ?')">
+                        <div class="mt-8 pt-8 border-t-2 border-red-200">
+                            <form action="{{ route('books.destroy', $book) }}" method="POST" 
+                                  onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce livre ?')">
                                 @csrf
                                 @method('DELETE')
-
                                 <button type="submit" class="btn btn-danger">
-                                    🗑️ Supprimer ce livre
+                                    Supprimer ce livre
                                 </button>
                             </form>
                         </div>

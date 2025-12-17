@@ -1,11 +1,11 @@
 <x-layout>
     <div class="max-w-md mx-auto mt-16 px-4">
         <div class="card">
-            <h1 class="text-center mb-6">✨ Inscription</h1>
+            <h1 class="text-center mb-6">Inscription</h1>
 
             {{-- Messages d'erreur --}}
             @if($errors->any())
-                <div class="alert alert-error mb-6">
+                <div class="alert alert-error">
                     <ul class="list-disc list-inside">
                         @foreach($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -20,7 +20,7 @@
                 {{-- Nom --}}
                 <div>
                     <label for="name" class="form-label">
-                        👤 Nom complet
+                        Nom complet
                     </label>
                     <input 
                         type="text" 
@@ -36,7 +36,7 @@
                 {{-- Email --}}
                 <div>
                     <label for="email" class="form-label">
-                        📧 Email
+                        Email
                     </label>
                     <input 
                         type="email" 
@@ -52,7 +52,7 @@
                 {{-- Mot de passe --}}
                 <div>
                     <label for="password" class="form-label">
-                        🔒 Mot de passe
+                        Mot de passe
                     </label>
                     <input 
                         type="password" 
@@ -63,6 +63,21 @@
                         required
                     >
                     <p class="text-sm text-gray-500 mt-1">Minimum 6 caractères</p>
+                </div>
+
+                {{-- Confirmation mot de passe --}}
+                <div>
+                    <label for="password_confirmation" class="form-label">
+                        Confirmer le mot de passe
+                    </label>
+                    <input 
+                        type="password" 
+                        id="password_confirmation" 
+                        name="password_confirmation"
+                        class="form-input"
+                        placeholder="••••••••"
+                        required
+                    >
                 </div>
 
                 {{-- Bouton --}}

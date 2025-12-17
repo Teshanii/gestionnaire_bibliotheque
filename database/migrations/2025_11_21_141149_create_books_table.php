@@ -18,6 +18,7 @@ return new class extends Migration
         $table->text('summary')->nullable();           
         $table->integer('published_year');             
         $table->string('isbn')->unique();
+        $table->foreignId('category_id')->nullable()->constrained();
         $table->timestamps();
     });
     

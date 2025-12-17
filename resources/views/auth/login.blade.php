@@ -1,16 +1,23 @@
 <x-layout>
     <div class="max-w-md mx-auto mt-16 px-4">
         <div class="card">
-            <h1 class="text-center mb-6">🔐 Connexion</h1>
+            <h1 class="text-center mb-6">Connexion</h1>
 
             {{-- Messages d'erreur --}}
             @if($errors->any())
-                <div class="alert alert-error mb-6">
+                <div class="alert alert-error">
                     <ul class="list-disc list-inside">
                         @foreach($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
                     </ul>
+                </div>
+            @endif
+
+            {{-- Message de succès (après inscription) --}}
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
                 </div>
             @endif
 
@@ -20,7 +27,7 @@
                 {{-- Email --}}
                 <div>
                     <label for="email" class="form-label">
-                        📧 Email
+                        Email
                     </label>
                     <input 
                         type="email" 
@@ -36,7 +43,7 @@
                 {{-- Mot de passe --}}
                 <div>
                     <label for="password" class="form-label">
-                        🔒 Mot de passe
+                        Mot de passe
                     </label>
                     <input 
                         type="password" 

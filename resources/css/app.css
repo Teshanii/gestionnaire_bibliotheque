@@ -7,76 +7,156 @@
 
 @theme {
     --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-    
-    /* Couleurs personnalisées pour ton projet */
-    --color-primary: #2563eb;
-    --color-secondary: #7c3aed;
 }
 
 @layer base {
+    body {
+        @apply bg-gray-50 text-gray-900;
+    }
+
     h1 {
-        @apply text-3xl font-bold;
+        @apply text-3xl font-bold mb-6;
     }
 
     h2 {
-        @apply text-2xl font-semibold;
+        @apply text-2xl font-bold mb-4;
     }
 
     h3 {
-        @apply text-xl font-semibold;
+        @apply text-xl font-semibold mb-3;
     }
 }
 
 @layer components {
-    /* Boutons */
+    /* Boutons basiques */
     .btn {
-        @apply px-4 py-2 rounded-lg font-semibold transition-colors;
+        @apply px-6 py-3 rounded-lg font-semibold transition;
     }
 
     .btn-primary {
-        @apply bg-blue-600 hover:bg-blue-700 text-white;
+        @apply bg-blue-600 text-white hover:bg-blue-700;
     }
 
     .btn-secondary {
-        @apply bg-gray-200 hover:bg-gray-300 text-gray-800;
+        @apply bg-gray-600 text-white hover:bg-gray-700;
     }
 
     .btn-danger {
-        @apply bg-red-600 hover:bg-red-700 text-white;
+        @apply bg-red-600 text-white hover:bg-red-700 rounded-lg;
     }
 
     /* Cards */
     .card {
-        @apply bg-white rounded-xl shadow-md p-6;
+        @apply bg-white rounded-xl shadow-lg p-6;
     }
 
-    .book-item {
-        @apply bg-white p-6 rounded-lg shadow hover:shadow-lg transition border-l-4 border-blue-500;
-    }
-
-    .card-stat {
-        @apply bg-white rounded-xl shadow-md p-6 border-l-4;
-    }
-
-    /* Forms */
-    .form-input {
-        @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent;
-    }
-
-    .form-label {
-        @apply block text-sm font-medium text-gray-700 mb-2;
-    }
-
-    /* Alerts */
+    /* Alertes */
     .alert {
-        @apply p-4 rounded-lg mb-4;
-    }
-
-    .alert-success {
-        @apply bg-green-100 text-green-800 border border-green-300;
+        @apply p-4 rounded-lg border-l-4 mb-6;
     }
 
     .alert-error {
-        @apply bg-red-100 text-red-800 border border-red-300;
+        @apply bg-red-50 border-red-500 text-red-800;
+    }
+
+    .alert-success {
+        @apply bg-green-50 border-green-500 text-green-800;
+    }
+
+    /* Formulaires */
+    .form-label {
+        @apply block text-gray-700 font-medium mb-2;
+    }
+
+    .form-input {
+        @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
+    }
+
+    /* Navigation active */
+    .nav-link {
+        @apply text-gray-700 hover:text-blue-600 transition font-medium px-3 py-2 rounded-lg;
+    }
+
+    .nav-link.active {
+        @apply text-blue-600 bg-blue-50;
+    }
+
+    /* Filtres catégories */
+    .filter-link {
+        @apply px-6 py-3 rounded-lg border-2 transition font-medium;
+    }
+
+    .filter-link:not(.active) {
+        @apply border-gray-200 bg-white text-gray-700 hover:border-blue-300;
+    }
+
+    .filter-link.active {
+        @apply border-blue-500 bg-blue-600 text-white;
+    }
+
+    /* Couleurs catégories - Couvertures */
+    .category-fiction {
+        @apply bg-gradient-to-br from-blue-400 to-blue-600;
+    }
+
+    .category-science-fiction {
+        @apply bg-gradient-to-br from-purple-400 to-purple-600;
+    }
+
+    .category-policier {
+        @apply bg-gradient-to-br from-red-400 to-red-600;
+    }
+
+    .category-romance {
+        @apply bg-gradient-to-br from-pink-400 to-pink-600;
+    }
+
+    .category-fantastique {
+        @apply bg-gradient-to-br from-indigo-400 to-indigo-600;
+    }
+
+    .category-biographie {
+        @apply bg-gradient-to-br from-green-400 to-green-600;
+    }
+
+    .category-histoire {
+        @apply bg-gradient-to-br from-yellow-400 to-yellow-600;
+    }
+
+    .category-default {
+        @apply bg-gradient-to-br from-gray-400 to-gray-600;
+    }
+
+    /* Badges catégories */
+    .badge {
+        @apply inline-block px-3 py-1 text-sm font-semibold rounded-full;
+    }
+
+    .badge-fiction {
+        @apply bg-blue-100 text-blue-800;
+    }
+
+    .badge-science-fiction {
+        @apply bg-purple-100 text-purple-800;
+    }
+
+    .badge-policier {
+        @apply bg-red-100 text-red-800;
+    }
+
+    .badge-romance {
+        @apply bg-pink-100 text-pink-800;
+    }
+
+    .badge-fantastique {
+        @apply bg-indigo-100 text-indigo-800;
+    }
+
+    .badge-biographie {
+        @apply bg-green-100 text-green-800;
+    }
+
+    .badge-histoire {
+        @apply bg-yellow-100 text-yellow-800;
     }
 }

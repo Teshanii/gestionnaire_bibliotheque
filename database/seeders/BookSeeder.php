@@ -14,17 +14,19 @@ class BookSeeder extends Seeder
      */
     public function run(): void
     {
-        $sciFi = Category::where('name', 'Science-Fiction')->first();
-        $fantasy = Category::where('name', 'Fantasy')->first();
-        $thriller = Category::where('name', 'Thriller')->first();
-        
+        $fiction = Category::where('name', 'Fiction')->first();
+        $scifi = Category::where('name', 'Science-Fiction')->first();
+        $policier = Category::where('name', 'Policier')->first();
+        $romance = Category::where('name', 'Romance')->first();
+        $fantastique = Category::where('name', 'Fantastique')->first();
+
         Book::create([
             'title' => 'Le Voleur de foudre',
             'author' => 'Rick Riordan',
             'published_year' => 2005,
             'isbn' => '978-2226186836',
             'summary' => 'Percy Jackson découvre qu\'il est un demi-dieu, fils de Poséidon, et doit empêcher une guerre entre les dieux de l\'Olympe.',
-            'category_id' => $fantasy->id,
+            'category_id' => $fiction->id,
         ]);
     }
 }
