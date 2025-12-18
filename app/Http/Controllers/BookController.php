@@ -29,7 +29,6 @@ class BookController extends Controller
             $books->where('category_id', $request->category);
         }
 
-        // Récupérer les résultats avec pagination
         $books = $books->latest()->paginate(12);
 
         return view('books.index', compact('books', 'categories'));

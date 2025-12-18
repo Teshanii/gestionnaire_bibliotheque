@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             'role' => 'user',
         ]);
 
-        // Seeder les catégories et livres
+        
         $this->call([
             CategorySeeder::class,
             BookSeeder::class,

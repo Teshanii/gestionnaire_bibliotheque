@@ -38,7 +38,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
-    // Dashboard Admin
+   
     Route::get('/admin/dashboard', function () {
         $totalBooks = \App\Models\Book::count();
         $totalUsers = \App\Models\User::count();

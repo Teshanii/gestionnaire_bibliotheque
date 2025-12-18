@@ -9,7 +9,7 @@
         @endif
 
         <div class="flex justify-between items-center mb-8">
-            <h1>🔐 Dashboard Admin</h1>
+            <h1> Dashboard Admin</h1>
             <a href="{{ route('books.create') }}" class="btn btn-primary">
                  Ajouter un livre
             </a>
@@ -41,7 +41,7 @@
                             {{ $totalCategories }}
                         </p>
                     </div>
-                    <div class="text-5xl">🏷️</div>
+    
                 </div>
             </div>
 
@@ -55,7 +55,6 @@
                             {{ $totalUsers }}
                         </p>
                     </div>
-                    <div class="text-5xl">👥</div>
                 </div>
             </div>
         </div>
@@ -63,7 +62,7 @@
         {{-- Derniers livres --}}
         @if($latestBooks->count() > 0)
             <div>
-                <h2 class="mb-6">🆕 Derniers livres ajoutés</h2>
+                <h2 class="mb-6">Derniers livres ajoutés</h2>
 
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden">
                     <table class="w-full">

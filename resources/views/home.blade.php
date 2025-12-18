@@ -4,7 +4,7 @@
         {{-- Bannière de bienvenue --}}
         <div class="text-center py-16">
             <h1 class="text-5xl font-bold mb-4">
-                📚 Bienvenue dans La Bibliothèque
+                Bienvenue dans La Bibliothèque
             </h1>
             <p class="text-xl text-gray-600 mb-8">
                 Découvrez et gérez votre collection de livres
@@ -38,7 +38,7 @@
         @if($latestBooks->count() > 0)
             <div>
                 <h2 class="mb-8 text-center">
-                    🆕 Derniers livres ajoutés
+                    Derniers livres ajoutés
                 </h2>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -58,7 +58,7 @@
 
             @auth
                 <a href="{{ route('books.index') }}" class="btn btn-primary inline-block">
-                    📚 Voir tous les livres
+                    Voir tous les livres
                 </a>
             @else
                 <a href="{{ route('register') }}" class="btn btn-primary inline-block">

@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto px-4 py-8">
         
         <div class="flex justify-between items-center mb-8">
-            <h1>📚 Catalogue des livres</h1>
+            <h1>Catalogue des livres</h1>
             
             @auth
                 @if(auth()->user()->role === 'admin')

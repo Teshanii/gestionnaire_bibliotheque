@@ -30,7 +30,7 @@ class User extends Authenticatable
         ];
     }
 
-    // Vérifier si l'utilisateur est admin
+   
     public function is_admin(): bool
     {
         return $this->role === 'admin';

@@ -35,7 +35,7 @@
         {{-- Derniers livres --}}
         @if($latestBooks->count() > 0)
             <div>
-                <h2 class="mb-6">🆕 Derniers livres ajoutés</h2>
+                <h2 class="mb-6">Derniers livres ajoutés</h2>
 
                 <div class="bg-white rounded-xl shadow-lg p-6">
                     @foreach($latestBooks as $book)

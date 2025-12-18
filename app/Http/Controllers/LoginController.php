@@ -15,7 +15,7 @@ class LoginController extends Controller
         return view('auth.login');
     }
 
-    // Traiter la connexion
+    
     public function login(Request $request)
     {
         $data = $request->validate([
@@ -26,7 +26,7 @@ class LoginController extends Controller
         // Tenter la connexion
         if (Auth::attempt($data)) {
             
-            // Rediriger selon le rôle
+            
             if (Auth::user()->role === 'admin') {
                 return redirect()->route('admin.dashboard')
                     ->with('success', 'Bienvenue Admin ' . Auth::user()->name . ' !');
@@ -36,19 +36,17 @@ class LoginController extends Controller
                 ->with('success', 'Bienvenue ' . Auth::user()->name . ' !');
         }
 
-        // Si échec de connexion
         return back()->withErrors([
             'email' => 'Email ou mot de passe incorrect.',
         ]);
     }
 
-    // Afficher le formulaire d'inscription
     public function showRegister()
     {
         return view('auth.register');
     }
 
-    // Traiter l'inscription
+    
     public function register(Request $request)
     {
         $validated = $request->validate([
@@ -71,7 +69,7 @@ class LoginController extends Controller
             ->with('success', 'Compte créé avec succès ! Bienvenue ' . $user->name . ' !');
     }
 
-    // Déconnexion
+    
     public function logout()
     {
         Auth::logout();
